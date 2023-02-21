@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextAppearance" parent="@android:style/TextAppearance"/>
+
+    <style name="TextAppearance.Heading">
+        <item name="android:textSize">@dimen/font_body2</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Body">
+        <item name="android:textSize">@dimen/font_body1</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextAppearance.Body.SingleLine">
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+    </style>
+
+</resources>

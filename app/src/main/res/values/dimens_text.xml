@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="font_caps">11sp</dimen>
+    <dimen name="font_small">12sp</dimen>
+    <dimen name="font_body1">14sp</dimen>
+    <dimen name="font_body1_half">7sp</dimen>
+    <dimen name="font_body2">16sp</dimen>
+    <dimen name="font_body2_half">8sp</dimen>
+
+    <dimen name="body_line_spacing_extra_small">2sp</dimen>
+
+</resources>

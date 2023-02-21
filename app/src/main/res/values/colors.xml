@@ -7,4 +7,18 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+
+    <!-- Base color definitions -->
+    <color name="primary_purple">#4c477f</color>
+    <color name="grey95">#f2f2f2</color>
+
+
+    <!-- Default semantic color -->
+    <color name="default_background_grey">@color/grey95</color>
+    <color name="default_primary">@color/primary_purple</color>
+    <color name="default_divider">#80d3d3d3</color>
+
+    <color name="background_primary">@color/brand_purple</color>
+    <color name="brand_purple">#1a124d</color>
 </resources>

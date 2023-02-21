@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--  Basic unit  -->
+    <dimen name="padding_standard">16dp</dimen>
+    <dimen name="padding_standard_micro">2dp</dimen>
+    <dimen name="padding_standard_a_quarter">4dp</dimen>
+    <dimen name="padding_standard_half">8dp</dimen>
+    <dimen name="padding_standard_three_quarters">12dp</dimen>
+    <dimen name="padding_standard_one_and_quarter">20dp</dimen>
+    <dimen name="padding_standard_one_and_half">24dp</dimen>
+    <dimen name="padding_standard_three_times">48dp</dimen>
+
+    <dimen name="default_double_margin">32dp</dimen>
+
+    <dimen name="layout_standard_horizontal_padding">@dimen/padding_standard</dimen>
+    <dimen name="layout_standard_vertical_padding">@dimen/padding_standard_three_quarters</dimen>
+    <dimen name="layout_padding_from_action_bar">@dimen/padding_standard_one_and_half</dimen>
+    <dimen name="layout_element_small_vertical_distance_padding">@dimen/padding_standard_half
+    </dimen>
+
+    <dimen name="default_button_rounding_radius">5dp</dimen>
+
+    <dimen name="general_divider_height">1dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+</resources>
