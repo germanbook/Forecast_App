@@ -9,7 +9,6 @@
     <dimen name="padding_standard_one_and_quarter">20dp</dimen>
     <dimen name="padding_standard_one_and_half">24dp</dimen>
     <dimen name="padding_standard_three_times">48dp</dimen>
-
     <dimen name="default_double_margin">32dp</dimen>
 
     <dimen name="layout_standard_horizontal_padding">@dimen/padding_standard</dimen>
