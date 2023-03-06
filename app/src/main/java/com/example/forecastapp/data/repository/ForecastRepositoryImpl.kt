@@ -22,9 +22,10 @@ class ForecastRepositoryImpl(
         }
     }
 
-    override suspend fun getCurrentWeather(metric: Boolean): LiveData<out CurrentWeather> {
+    override suspend fun getCurrentWeather(metric: Boolean, latitude: Double, longitude: Double):
+            LiveData<out CurrentWeather> {
         return withContext(Dispatchers.IO) {
-            initWeatherData(metric)
+            initWeatherData(metric, latitude, longitude)
             return@withContext if(metric) currentWeatherDao.getWeatherMetric() else
                 currentWeatherDao.getWeatherImperial()
         }
@@ -41,38 +42,31 @@ class ForecastRepositoryImpl(
         }
     }
 
-    private suspend fun initWeatherData(metric: Boolean) {
+    private suspend fun initWeatherData(metric: Boolean, latitude: Double, longitude: Double) {
         if(isFetchCurrentNeeded(ZonedDateTime.now().minusHours(1))) {
-//            if(metric)
-//                fetchCurrentWeatherMetric()
-//            else
-//                fetchCurrentWeatherImperial()
-            fetchCurrentWeatherMetric()
-            fetchCurrentWeatherImperial()
+            fetchCurrentWeather(latitude, longitude)
         }
     }
 
-    private suspend fun fetchCurrentWeatherMetric() {
+    private suspend fun fetchCurrentWeather(latitude: Double, longitude: Double) {
+
+        // location coordinate
 
         weatherNetworkDataSource.fetchCurrentWeather(
-            -41.29,
-            174.77,
-            "2023-03-05",
-            "2023-03-05",
+            latitude,
+            longitude,
+            "2023-03-06",
+            "2023-03-06",
             "celsius",
             "kmh",
             "mm",
         )
 
-    }
-
-    private suspend fun fetchCurrentWeatherImperial() {
-
         weatherNetworkDataSource.fetchCurrentWeather(
-            -41.29,
-            174.77,
-            "2023-03-04",
-            "2023-03-04",
+            latitude,
+            longitude,
+            "2023-03-06",
+            "2023-03-06",
             "fahrenheit",
             "mph",
             "inch",
@@ -84,4 +78,5 @@ class ForecastRepositoryImpl(
         val thirtyMinutesAgo = ZonedDateTime.now().minusMinutes(30)
         return lastFetchTime.isBefore(thirtyMinutesAgo)
     }
+
 }

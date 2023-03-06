@@ -1,14 +1,18 @@
 package com.example.forecastapp
 
 import android.app.Application
+import android.content.Context
 import androidx.preference.PreferenceManager
 import com.example.forecastapp.data.db.ForecastDatabase
 import com.example.forecastapp.data.network.*
+import com.example.forecastapp.data.provider.LocationProvider
+import com.example.forecastapp.data.provider.LocationProviderImpl
 import com.example.forecastapp.data.provider.UnitProvider
 import com.example.forecastapp.data.provider.UnitProviderImpl
 import com.example.forecastapp.data.repository.ForecastRepository
 import com.example.forecastapp.data.repository.ForecastRepositoryImpl
 import com.example.forecastapp.ui.weather.current.CurrentWeatherViewModelFactory
+import com.google.android.gms.location.LocationServices
 import com.jakewharton.threetenabp.AndroidThreeTen
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -27,9 +31,11 @@ class ForecastApplication : Application(), KodeinAware {
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind() from singleton { WeatherApiService(instance()) }
         bind<WeatherNetworkDataSource>() with singleton { WeatherNetworkDataSourceImpl(instance()) }
+        bind() from provider { LocationServices.getFusedLocationProviderClient(instance<Context>()) }
+        bind<LocationProvider>() with singleton { LocationProviderImpl(instance(), instance()) }
         bind<ForecastRepository>() with singleton { ForecastRepositoryImpl(instance(), instance()) }
         bind<UnitProvider>() with singleton { UnitProviderImpl(instance()) }
-        bind() from provider { CurrentWeatherViewModelFactory(instance(), instance()) }
+        bind() from provider { CurrentWeatherViewModelFactory(instance(), instance(), instance(), instance()) }
     }
 
     override fun onCreate() {
