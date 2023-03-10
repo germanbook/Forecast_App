@@ -16,6 +16,11 @@ data class CurrentWeather(
     val winddirection: Double,
     val weathercode: Int,
     val time: String,
+    val temperature2mMax: Double,
+    val temperature2mMin: Double,
+    val sunrise: String,
+    val sunset: String,
+    val uvIndexMax: Double,
     @PrimaryKey(autoGenerate = false)
     var id: Int,
 ) {

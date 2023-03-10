@@ -18,8 +18,10 @@ interface CurrentWeatherDao {
     @Query("select * from current_weather where id = $CURRENT_WEATHER_METRIC_ID")
     fun getWeatherMetric(): LiveData<CurrentWeather>
 
-
     @Query("select * from current_weather where id = $CURRENT_WEATHER_IMPERIAL_ID")
     fun getWeatherImperial(): LiveData<CurrentWeather>
+
+    @Query("select (select COUNT(*) from current_weather) != 0")
+    fun isCurrentWeatherDownloaded(): Boolean
 
 }

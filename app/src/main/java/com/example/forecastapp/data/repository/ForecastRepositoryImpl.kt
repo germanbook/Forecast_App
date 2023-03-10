@@ -1,20 +1,29 @@
 package com.example.forecastapp.data.repository
 
+import android.content.Context
+import android.location.Address
+import android.location.Geocoder
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.forecastapp.data.db.CurrentWeatherDao
-import com.example.forecastapp.data.db.entity.current.CURRENT_WEATHER_IMPERIAL_ID
-import com.example.forecastapp.data.db.entity.current.CURRENT_WEATHER_METRIC_ID
-import com.example.forecastapp.data.db.entity.current.CurrentWeather
+import com.example.forecastapp.data.db.DownloadedCurrentWeatherLocationDao
+import com.example.forecastapp.data.db.entity.current.*
 import com.example.forecastapp.data.network.WeatherNetworkDataSource
 import com.example.forecastapp.data.network.response.CurrentWeatherResponse
+import com.example.forecastapp.data.provider.LocationProvider
 import kotlinx.coroutines.*
 import org.threeten.bp.ZonedDateTime
+import java.util.*
 import kotlin.properties.Delegates
 
 class ForecastRepositoryImpl(
     private val currentWeatherDao: CurrentWeatherDao,
+    private val deviceLastLocationDao: DownloadedCurrentWeatherLocationDao,
     private val weatherNetworkDataSource: WeatherNetworkDataSource,
+    locationProvider: LocationProvider,
 ) : ForecastRepository {
+
+    private val locationSystem = locationProvider
 
     init {
         weatherNetworkDataSource.downloadedCurrentWeather.observeForever { newCurrentWeather ->
@@ -25,24 +34,49 @@ class ForecastRepositoryImpl(
     override suspend fun getCurrentWeather(metric: Boolean, latitude: Double, longitude: Double):
             LiveData<out CurrentWeather> {
         return withContext(Dispatchers.IO) {
-            initWeatherData(metric, latitude, longitude)
+            initWeatherData(latitude, longitude)
             return@withContext if(metric) currentWeatherDao.getWeatherMetric() else
                 currentWeatherDao.getWeatherImperial()
         }
     }
 
+    override fun getDownloadedCurrentWeatherLocation(): LiveData<DownloadedCurrentWeatherLocation> {
+        return deviceLastLocationDao.getDownloadedCurrentWeatherLocation()
+    }
+
+    override fun isCurrentWeatherDownloaded(): Boolean {
+        return currentWeatherDao.isCurrentWeatherDownloaded()
+    }
+
     private fun persistFetchedCurrentWeather(fetchedWeather: CurrentWeatherResponse) {
         GlobalScope.launch(Dispatchers.IO) {
 
-            if(fetchedWeather.dailyUnits.precipitationSum == "mm") {
-                fetchedWeather.currentWeather.id = CURRENT_WEATHER_METRIC_ID
-            } else fetchedWeather.currentWeather.id = CURRENT_WEATHER_IMPERIAL_ID
+            var id: Int = if(fetchedWeather.dailyUnits.precipitationSum == "mm")
+                CURRENT_WEATHER_METRIC_ID else CURRENT_WEATHER_IMPERIAL_ID
 
-            currentWeatherDao.updateInsert(fetchedWeather.currentWeather)
+            currentWeatherDao.updateInsert(CurrentWeather(
+                fetchedWeather.currentWeather.temperature,
+                fetchedWeather.currentWeather.windspeed,
+                fetchedWeather.currentWeather.winddirection,
+                fetchedWeather.currentWeather.weathercode,
+                fetchedWeather.currentWeather.time,
+                fetchedWeather.daily.temperature2mMax[0],
+                fetchedWeather.daily.temperature2mMin[0],
+                fetchedWeather.daily.sunrise[0],
+                fetchedWeather.daily.sunset[0],
+                fetchedWeather.daily.uvIndexMax[0],
+                id,
+            ))
+
+            deviceLastLocationDao.updateDeviceLastLocation(DownloadedCurrentWeatherLocation(
+                locationSystem.getLocationString(fetchedWeather.latitude, fetchedWeather.longitude)!!,
+                fetchedWeather.latitude,
+                fetchedWeather.longitude,
+            ))
         }
     }
 
-    private suspend fun initWeatherData(metric: Boolean, latitude: Double, longitude: Double) {
+    private suspend fun initWeatherData(latitude: Double, longitude: Double) {
         if(isFetchCurrentNeeded(ZonedDateTime.now().minusHours(1))) {
             fetchCurrentWeather(latitude, longitude)
         }
@@ -55,8 +89,8 @@ class ForecastRepositoryImpl(
         weatherNetworkDataSource.fetchCurrentWeather(
             latitude,
             longitude,
-            "2023-03-06",
-            "2023-03-06",
+            "2023-03-10",
+            "2023-03-10",
             "celsius",
             "kmh",
             "mm",
@@ -65,8 +99,8 @@ class ForecastRepositoryImpl(
         weatherNetworkDataSource.fetchCurrentWeather(
             latitude,
             longitude,
-            "2023-03-06",
-            "2023-03-06",
+            "2023-03-10",
+            "2023-03-10",
             "fahrenheit",
             "mph",
             "inch",

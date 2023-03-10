@@ -1,19 +1,22 @@
 package com.example.forecastapp.ui.weather.current
 
+import android.content.Context
 import android.content.res.Resources
 import android.location.Location
+import android.net.ConnectivityManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Switch
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.forecastapp.R
 import com.example.forecastapp.data.db.entity.current.CurrentWeather
+import com.example.forecastapp.data.db.entity.current.DownloadedCurrentWeatherLocation
 import com.example.forecastapp.databinding.FragmentCurrentWeatherBinding
 import com.example.forecastapp.ui.base.ScopedFragment
 import kotlinx.coroutines.Deferred
@@ -21,7 +24,6 @@ import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
-import java.lang.reflect.Field
 
 class   CurrentWeatherFragment : ScopedFragment(), KodeinAware {
 
@@ -46,44 +48,28 @@ class   CurrentWeatherFragment : ScopedFragment(), KodeinAware {
 
     private fun bindUI() = launch {
 
-        lateinit var currentWeather: LiveData<out CurrentWeather>
-
-        if (isUseDeviceLocation()) {
-            currentWeather = viewModel.updateWeather(getWeatherLocation().await()!!.latitude, getWeatherLocation().await()!!.longitude)
-            currentWeather.observe(viewLifecycleOwner, Observer {
-                if(it == null) return@Observer
-                binding.groupLoading.visibility = View.GONE
-
-                updateLocation("Wellington")
-                updateDateToToday()
-                updateTemperature(it.temperature)
-                updateCondition(it.weathercode)
-                updateConditionIcon(it.weathercode)
-                updateWindSpeed(it.windspeed)
-                updateWindDirection(it.winddirection)
-            })
+        if (isOnline()) {
+            if (isUseDeviceLocation())
+                updateWeatherUI(getWeatherLocation().await()!!.latitude, getWeatherLocation().await()!!.longitude)
+            else {
+                if (viewModel.getCustomLocationCoordinates() == null)
+                    emptyLocationEnteredAlert()
+                else
+                    updateWeatherUI(viewModel.getCustomLocationCoordinates()!![0], viewModel.getCustomLocationCoordinates()!![1])
+            }
         }
-        else{
-            viewModel.getCustomLocationCoordinates()
+        else {
+            if (viewModel.isWeatherDataDownloaded()) {
+                var location: LiveData<out DownloadedCurrentWeatherLocation> =
+                    viewModel.getDownloadedCurrentWeatherLocation()
 
-            currentWeather = viewModel.updateWeather(viewModel.getCustomLocationCoordinates()[0], viewModel.getCustomLocationCoordinates()[1])
-            currentWeather.observe(viewLifecycleOwner, Observer {
-                if(it == null) return@Observer
-                binding.groupLoading.visibility = View.GONE
-
-                updateLocation("Wellington")
-                updateDateToToday()
-                updateTemperature(it.temperature)
-                updateCondition(it.weathercode)
-                updateConditionIcon(it.weathercode)
-                updateWindSpeed(it.windspeed)
-                updateWindDirection(it.winddirection)
-            })
-
-
-            Toast.makeText(activity, "Please set location manually in settings", Toast.LENGTH_LONG).show()
+                location.observe(viewLifecycleOwner, Observer {
+                    if (it == null) return@Observer
+                    updateWeatherUI(it.latitude, it.longitude)
+                })
+            }
+            internetConnectionAlert()
         }
-
     }
 
     private fun chooseLocalizedUnitAbbreviation(metric: String, imperial: String): String {
@@ -122,6 +108,28 @@ class   CurrentWeatherFragment : ScopedFragment(), KodeinAware {
         binding.imageViewConditionIcon.setImageResource(getConditionIcon(conditionCode))
     }
 
+    private fun updateTemperatureMax(temperatureMax: Double) {
+        val unitAbbreviation = chooseLocalizedUnitAbbreviation("°C", "°F")
+        binding.textViewTemperatureMax.text = "H: $temperatureMax$unitAbbreviation"
+    }
+
+    private fun updateTemperatureMin(temperatureMin: Double) {
+        val unitAbbreviation = chooseLocalizedUnitAbbreviation("°C", "°F")
+        binding.textViewTemperatureMin.text = "L: $temperatureMin$unitAbbreviation"
+    }
+
+    private fun updateSunriseTime(sunrise: String) {
+        binding.textViewSunrise.text = "Sunrise: ${sunrise.substring(sunrise.length - 5, sunrise.length)} AM"
+    }
+
+    private fun updateSunsetTime(sunset: String) {
+        binding.textViewSunset.text = "Sunset:  ${sunset.substring(sunset.length - 5, sunset.length)} PM"
+    }
+
+    private fun updateUVIndexMax(uvIndexMax: Double) {
+        binding.textViewUvIndexMax.text = "UV Index: $uvIndexMax"
+    }
+
     private fun getResourceString(resName: String): String? {
         return try {
             context?.resources?.let { context?.resources!!.getString(it.getIdentifier(resName, "String", context?.packageName)) }
@@ -133,8 +141,8 @@ class   CurrentWeatherFragment : ScopedFragment(), KodeinAware {
     private fun getConditionIcon(conditionCode: Int): Int {
         var weatherResource: Int = 0
         when(conditionCode) {
-            1 -> weatherResource = R.drawable.weather_sun
-            0, 2 -> weatherResource = R.drawable.weather_news
+            0, 1 -> weatherResource = R.drawable.weather_sun
+            2 -> weatherResource = R.drawable.weather_news
             3 -> weatherResource = R.drawable.weather_cloud
             4, 5, 10, 11, 20, in 30..35 ->
                 weatherResource = R.drawable.weather_fog
@@ -160,5 +168,58 @@ class   CurrentWeatherFragment : ScopedFragment(), KodeinAware {
 
     private fun isUseDeviceLocation(): Boolean {
         return viewModel.isUseDeviceLocation
+    }
+
+    private fun updateWeatherUI(latitude: Double, longitude: Double) = launch {
+
+        var downloadedCurrentWeatherLocation: LiveData<out DownloadedCurrentWeatherLocation> =
+            viewModel.getDownloadedCurrentWeatherLocation()
+
+        var currentWeather: LiveData<out CurrentWeather> =
+            viewModel.updateWeather(latitude, longitude)
+
+        downloadedCurrentWeatherLocation.observe(viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            updateLocation(it.addressString)
+        })
+
+        currentWeather.observe(viewLifecycleOwner, Observer {
+            if(it == null) return@Observer
+            binding.groupLoading.visibility = View.GONE
+            updateDateToToday()
+            updateTemperature(it.temperature)
+            updateCondition(it.weathercode)
+            updateConditionIcon(it.weathercode)
+            updateTemperatureMax(it.temperature2mMax)
+            updateTemperatureMin(it.temperature2mMin)
+            updateSunriseTime(it.sunrise)
+            updateSunsetTime(it.sunset)
+            updateUVIndexMax(it.uvIndexMax)
+            updateWindSpeed(it.windspeed)
+            updateWindDirection(it.winddirection)
+        })
+    }
+
+    private fun isOnline(): Boolean {
+        val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE)
+                as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
+    }
+
+    private fun internetConnectionAlert() {
+        val builder = AlertDialog.Builder(this.requireContext())
+        builder.setTitle(R.string.no_internet_alert_title)
+        builder.setMessage(R.string.no_internet_alert_message)
+        builder.setPositiveButton(android.R.string.ok) { dialog, which -> }
+        builder.show()
+    }
+
+    private fun emptyLocationEnteredAlert() {
+        val builder = AlertDialog.Builder(this.requireContext())
+        builder.setTitle(R.string.no_location_entered_alert_title)
+        builder.setMessage(R.string.no_location_entered_alert_message)
+        builder.setPositiveButton(android.R.string.ok) { dialog, which -> }
+        builder.show()
     }
 }

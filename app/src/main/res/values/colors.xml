@@ -22,4 +22,8 @@
 
     <color name="background_primary">@color/brand_purple</color>
     <color name="brand_purple">#1a124d</color>
+
+    <!-- Background color -->
+    <color name="background_weather">#597A33</color>
+
 </resources>

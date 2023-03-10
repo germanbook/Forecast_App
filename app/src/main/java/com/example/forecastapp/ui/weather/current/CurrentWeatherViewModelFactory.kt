@@ -10,11 +10,10 @@ import com.example.forecastapp.data.repository.ForecastRepository
 class CurrentWeatherViewModelFactory(
     private val forecastRepository: ForecastRepository,
     private val unitProvider: UnitProvider,
-    private val locationProvider: LocationProvider,
-    private val context: Context,
+    private val locationProvider: LocationProvider
 ) : ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return CurrentWeatherViewModel(forecastRepository, unitProvider, locationProvider, context) as T
+        return CurrentWeatherViewModel(forecastRepository, unitProvider, locationProvider) as T
     }
 }

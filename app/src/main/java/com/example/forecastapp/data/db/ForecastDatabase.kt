@@ -5,13 +5,15 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.forecastapp.data.db.entity.current.CurrentWeather
+import com.example.forecastapp.data.db.entity.current.DownloadedCurrentWeatherLocation
 
 @Database(
-    entities = [CurrentWeather::class],
+    entities = [CurrentWeather::class, DownloadedCurrentWeatherLocation::class],
     version = 1,
 )
 abstract class ForecastDatabase: RoomDatabase(){
     abstract fun currentWeatherDao(): CurrentWeatherDao
+    abstract fun deviceLastLocationDao(): DownloadedCurrentWeatherLocationDao
 
     companion object {
         @Volatile
@@ -25,6 +27,7 @@ abstract class ForecastDatabase: RoomDatabase(){
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(context.applicationContext,
                 ForecastDatabase::class.java, "forecast")
+                .allowMainThreadQueries()
                 .build()
     }
 }

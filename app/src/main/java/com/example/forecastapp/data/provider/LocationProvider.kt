@@ -8,4 +8,6 @@ interface LocationProvider {
     suspend fun getPreferredLocationString(): String?
     fun getDeviceLocation(): Deferred<Location?>
     fun isUseDeviceLocation(): Boolean
+    fun getLocationString(latitude: Double, longitude: Double): String?
+    suspend fun getCustomLocationCoordinates(): List<Double>?
 }

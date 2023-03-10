@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.weather.current.CurrentWeatherFragment">
+    tools:context=".ui.weather.current.CurrentWeatherFragment"
+    android:background="#40212121"
+    android:backgroundTint="@color/background_weather">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -58,7 +60,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/padding_standard_half"
-        android:layout_marginTop="@dimen/padding_standard_half"
+        android:layout_marginTop="@dimen/padding_standard_one_and_half"
         android:layout_marginEnd="@dimen/padding_standard_half"
         android:layout_marginBottom="@dimen/padding_standard_half"
         app:layout_constraintDimensionRatio="@string/dimension_ratio_standard"
@@ -96,14 +98,99 @@
         android:layout_marginTop="@dimen/padding_standard_half"
         android:layout_marginEnd="@dimen/padding_standard_half"
         android:layout_marginBottom="@dimen/padding_standard_half"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
         app:layout_constraintHorizontal_bias="0.043"
         app:layout_constraintVertical_bias="0.017"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Patchy rain possible" />
+        tools:text="Fog or ice fog, has begun or become thicker during the past hour" />
+
+    <TextView
+        android:id="@+id/textView_temperature_max"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_standard_half"
+        android:layout_marginTop="@dimen/padding_standard_half"
+        android:layout_marginEnd="@dimen/padding_standard_half"
+        android:layout_marginBottom="@dimen/padding_standard_half"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        app:layout_constraintHorizontal_bias="0.031"
+        app:layout_constraintVertical_bias="0.45"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="H: 21°C" />
+
+    <TextView
+        android:id="@+id/textView_temperature_min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_standard_half"
+        android:layout_marginTop="@dimen/padding_standard_half"
+        android:layout_marginEnd="@dimen/padding_standard_half"
+        android:layout_marginBottom="@dimen/padding_standard_half"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        app:layout_constraintHorizontal_bias="0.031"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_temperature_max"
+        tools:text="L: 7°C" />
+
+    <TextView
+        android:id="@+id/textView_sunrise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_standard_half"
+        android:layout_marginTop="@dimen/padding_standard_half"
+        android:layout_marginEnd="@dimen/padding_standard_half"
+        android:layout_marginBottom="@dimen/padding_standard_half"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        app:layout_constraintHorizontal_bias="0.031"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_temperature_min"
+        tools:text="Sunrise: 6:50" />
+
+    <TextView
+        android:id="@+id/textView_sunset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_standard_half"
+        android:layout_marginTop="@dimen/padding_standard_half"
+        android:layout_marginEnd="@dimen/padding_standard_half"
+        android:layout_marginBottom="@dimen/padding_standard_half"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        app:layout_constraintHorizontal_bias="0.031"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_sunrise"
+        tools:text="Sunset: 7:50" />
+
+    <TextView
+        android:id="@+id/textView_uv_index_max"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_standard_half"
+        android:layout_marginTop="@dimen/padding_standard_half"
+        android:layout_marginEnd="@dimen/padding_standard_half"
+        android:layout_marginBottom="@dimen/padding_standard_half"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        app:layout_constraintHorizontal_bias="0.031"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_sunset"
+        tools:text="UV Index: 3" />
 
     <TextView
         android:id="@+id/textView_wind_speed"
@@ -113,13 +200,13 @@
         android:layout_marginTop="@dimen/padding_standard_half"
         android:layout_marginEnd="@dimen/padding_standard_half"
         android:layout_marginBottom="@dimen/padding_standard_half"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        app:layout_constraintHorizontal_bias="0.028"
-        app:layout_constraintVertical_bias="0.542"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        app:layout_constraintHorizontal_bias="0.031"
+        app:layout_constraintVertical_bias="0.0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_uv_index_max"
         tools:text="Wind Speed: 32km/h" />
 
     <TextView
@@ -130,7 +217,7 @@
         android:layout_marginTop="@dimen/padding_standard_half"
         android:layout_marginEnd="@dimen/padding_standard_half"
         android:layout_marginBottom="@dimen/padding_standard_half"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         app:layout_constraintHorizontal_bias="0.031"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintBottom_toBottomOf="parent"

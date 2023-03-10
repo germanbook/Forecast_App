@@ -1,6 +1,7 @@
 package com.example.forecastapp.data.network.response
 
 
+import androidx.room.Entity
 import com.example.forecastapp.data.db.entity.current.CurrentWeather
 import com.example.forecastapp.data.db.entity.current.Daily
 import com.example.forecastapp.data.db.entity.current.DailyUnits
