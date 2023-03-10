@@ -12,7 +12,9 @@ import com.example.forecastapp.data.network.WeatherNetworkDataSource
 import com.example.forecastapp.data.network.response.CurrentWeatherResponse
 import com.example.forecastapp.data.provider.LocationProvider
 import kotlinx.coroutines.*
+import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZonedDateTime
+import org.threeten.bp.format.DateTimeFormatter
 import java.util.*
 import kotlin.properties.Delegates
 
@@ -84,13 +86,13 @@ class ForecastRepositoryImpl(
 
     private suspend fun fetchCurrentWeather(latitude: Double, longitude: Double) {
 
-        // location coordinate
+        var today = getCurrentDate()
 
         weatherNetworkDataSource.fetchCurrentWeather(
             latitude,
             longitude,
-            "2023-03-10",
-            "2023-03-10",
+            today,
+            today,
             "celsius",
             "kmh",
             "mm",
@@ -99,8 +101,8 @@ class ForecastRepositoryImpl(
         weatherNetworkDataSource.fetchCurrentWeather(
             latitude,
             longitude,
-            "2023-03-10",
-            "2023-03-10",
+            today,
+            today,
             "fahrenheit",
             "mph",
             "inch",
@@ -111,6 +113,10 @@ class ForecastRepositoryImpl(
     private fun isFetchCurrentNeeded(lastFetchTime: ZonedDateTime): Boolean {
         val thirtyMinutesAgo = ZonedDateTime.now().minusMinutes(30)
         return lastFetchTime.isBefore(thirtyMinutesAgo)
+    }
+
+    private fun getCurrentDate(): String {
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
     }
 
 }
