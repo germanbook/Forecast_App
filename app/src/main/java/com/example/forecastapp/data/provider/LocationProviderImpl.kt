@@ -78,12 +78,17 @@ class LocationProviderImpl(
             return null
         }else {
             val gc: Geocoder = Geocoder(context)
+
             val ads: List<Address> = gc.getFromLocationName(getPreferredLocationString() as String, 1) as List<Address>
             var coordinates = ArrayList<Double>(ads.size)
             for ( i in ads) {
                 if(i.hasLatitude() && i.hasLongitude()) {
-                    coordinates.add(i.latitude)
-                    coordinates.add(i.longitude)
+
+                    var l = i.latitude
+                    var long = i.longitude
+
+                    coordinates.add(l)
+                    coordinates.add(long)
                 }
             }
             return coordinates

@@ -17,6 +17,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.forecastapp.R
 import com.example.forecastapp.data.db.entity.current.CurrentWeather
 import com.example.forecastapp.data.db.entity.current.DownloadedCurrentWeatherLocation
+import com.example.forecastapp.data.repository.IMPERIAL_UNIT_MPH
+import com.example.forecastapp.data.repository.METRIC_UNIT_KMH
 import com.example.forecastapp.databinding.FragmentCurrentWeatherBinding
 import com.example.forecastapp.ui.base.ScopedFragment
 import kotlinx.coroutines.Deferred
@@ -24,6 +26,9 @@ import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
+
+const val METRIC_UNIT_CELSIUS_SIGN = "°C"
+const val IMPERIAL_UNIT_FAHRENHEIT_SIGN = "°F"
 
 class   CurrentWeatherFragment : ScopedFragment(), KodeinAware {
 
@@ -81,11 +86,11 @@ class   CurrentWeatherFragment : ScopedFragment(), KodeinAware {
     }
 
     private fun updateDateToToday() {
-        (activity as? AppCompatActivity)?.supportActionBar?.subtitle = "Today"
+        (activity as? AppCompatActivity)?.supportActionBar?.subtitle = getText(R.string.current_fragment_actionbar_subtitle)
     }
 
     private fun updateTemperature(temperature: Double) {
-        val unitAbbreviation = chooseLocalizedUnitAbbreviation("°C", "°F")
+        val unitAbbreviation = chooseLocalizedUnitAbbreviation(METRIC_UNIT_CELSIUS_SIGN, IMPERIAL_UNIT_FAHRENHEIT_SIGN)
         binding.textViewTemperature.text = "$temperature$unitAbbreviation"
     }
 
@@ -96,12 +101,12 @@ class   CurrentWeatherFragment : ScopedFragment(), KodeinAware {
     }
 
     private fun updateWindSpeed(windSpeed: Double) {
-        val unitAbbreviation = chooseLocalizedUnitAbbreviation("kmh", "mph")
-        binding.textViewWindSpeed.text = "Wind Speed: $windSpeed$unitAbbreviation"
+        val unitAbbreviation = chooseLocalizedUnitAbbreviation(METRIC_UNIT_KMH, IMPERIAL_UNIT_MPH)
+        binding.textViewWindSpeed.text = getText(R.string.current_fragment_wind_speed) as String + " $windSpeed$unitAbbreviation"
     }
 
     private fun updateWindDirection(windDirection: Double) {
-        binding.textViewWindDirection.text = "Wind Direction: $windDirection °"
+        binding.textViewWindDirection.text = getText(R.string.current_fragment_wind_direction) as String + " $windDirection °"
     }
 
     private fun updateConditionIcon(conditionCode: Int) {
@@ -109,25 +114,29 @@ class   CurrentWeatherFragment : ScopedFragment(), KodeinAware {
     }
 
     private fun updateTemperatureMax(temperatureMax: Double) {
-        val unitAbbreviation = chooseLocalizedUnitAbbreviation("°C", "°F")
-        binding.textViewTemperatureMax.text = "H: $temperatureMax$unitAbbreviation"
+        val unitAbbreviation = chooseLocalizedUnitAbbreviation(METRIC_UNIT_CELSIUS_SIGN, IMPERIAL_UNIT_FAHRENHEIT_SIGN)
+        binding.textViewTemperatureMax.text = getText(R.string.current_fragment_temperature_max) as String + " $temperatureMax$unitAbbreviation"
     }
 
     private fun updateTemperatureMin(temperatureMin: Double) {
-        val unitAbbreviation = chooseLocalizedUnitAbbreviation("°C", "°F")
-        binding.textViewTemperatureMin.text = "L: $temperatureMin$unitAbbreviation"
+        val unitAbbreviation = chooseLocalizedUnitAbbreviation(METRIC_UNIT_CELSIUS_SIGN, IMPERIAL_UNIT_FAHRENHEIT_SIGN)
+        binding.textViewTemperatureMin.text = getText(R.string.current_fragment_temperature_min) as String + " $temperatureMin$unitAbbreviation"
     }
 
     private fun updateSunriseTime(sunrise: String) {
-        binding.textViewSunrise.text = "Sunrise: ${sunrise.substring(sunrise.length - 5, sunrise.length)} AM"
+        binding.textViewSunrise.text = getText(R.string.current_fragment_sunrise) as String +
+                " ${sunrise.substring(sunrise.length - 5, sunrise.length)} " +
+                getText(R.string.current_fragment_am)
     }
 
     private fun updateSunsetTime(sunset: String) {
-        binding.textViewSunset.text = "Sunset:  ${sunset.substring(sunset.length - 5, sunset.length)} PM"
+        binding.textViewSunset.text = getText(R.string.current_fragment_sunset) as String +
+                " ${sunset.substring(sunset.length - 5, sunset.length)} " +
+                getText(R.string.current_fragment_pm)
     }
 
     private fun updateUVIndexMax(uvIndexMax: Double) {
-        binding.textViewUvIndexMax.text = "UV Index: $uvIndexMax"
+        binding.textViewUvIndexMax.text = getText(R.string.current_fragment_uv_index_max) as String + " $uvIndexMax"
     }
 
     private fun getResourceString(resName: String): String? {

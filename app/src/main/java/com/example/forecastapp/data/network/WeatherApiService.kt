@@ -11,6 +11,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import java.util.*
 
+const val API_URL = "https://api.open-meteo.com/v1/"
 interface WeatherApiService {
 
     @GET("forecast")
@@ -58,7 +59,7 @@ interface WeatherApiService {
 
             return Retrofit.Builder()
                 .client(okHttpClient)
-                .baseUrl("https://api.open-meteo.com/v1/")
+                .baseUrl(API_URL)
                 .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()

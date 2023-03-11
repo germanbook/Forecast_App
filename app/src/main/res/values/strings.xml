@@ -12,4 +12,19 @@
     <string name="no_location_entered_alert_message">Please enter your location!</string>
     <string name="current_weather_loading">Loading</string>
     <string name="app_label">iWeather</string>
+
+    <!-- Settings -->
+    <string name="settings_fragment_actionbar_title">Settings</string>
+
+    <!-- Current Weather -->
+    <string name="current_fragment_actionbar_subtitle">Today</string>
+    <string name="current_fragment_wind_speed">Wind Speed</string>
+    <string name="current_fragment_wind_direction">Wind Direction</string>
+    <string name="current_fragment_temperature_max">H</string>
+    <string name="current_fragment_temperature_min">L</string>
+    <string name="current_fragment_sunrise">Sunrise</string>
+    <string name="current_fragment_sunset">Sunset</string>
+    <string name="current_fragment_uv_index_max">UV Index</string>
+    <string name="current_fragment_am">AM</string>
+    <string name="current_fragment_pm">PM</string>
 </resources>

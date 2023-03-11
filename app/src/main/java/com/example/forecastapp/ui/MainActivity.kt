@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity(), KodeinAware {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
-    private lateinit var bottomNav: BottomNavigationView
     private lateinit var navHostFragment : NavHostFragment
 
     override val kodein by closestKodein()
@@ -94,8 +93,9 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         if (requestCode == MY_PERMISSION_ACCESS_COARSE_LOCATION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 bindLocationManager()
-            else
-                Toast.makeText(this, "Please set location manually in settings", Toast.LENGTH_SHORT).show()
+            else {
+                //Toast.makeText(this, "Please set location manually in settings", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

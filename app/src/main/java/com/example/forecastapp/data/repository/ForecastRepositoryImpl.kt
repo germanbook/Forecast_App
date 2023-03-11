@@ -18,6 +18,15 @@ import org.threeten.bp.format.DateTimeFormatter
 import java.util.*
 import kotlin.properties.Delegates
 
+const val METRIC_UNIT_CELSIUS = "celsius"
+const val METRIC_UNIT_KMH = "kmh"
+const val METRIC_UNIT_MM = "mm"
+const val IMPERIAL_UNIT_FAHRENHEIT = "fahrenheit"
+const val IMPERIAL_UNIT_MPH = "mph"
+const val IMPERIAL_UNIT__INCH = "inch"
+const val DATE_FORMAT = "yyyy-MM-dd"
+const val THIRTY_MINUTES = 30 as Long
+
 class ForecastRepositoryImpl(
     private val currentWeatherDao: CurrentWeatherDao,
     private val deviceLastLocationDao: DownloadedCurrentWeatherLocationDao,
@@ -53,7 +62,7 @@ class ForecastRepositoryImpl(
     private fun persistFetchedCurrentWeather(fetchedWeather: CurrentWeatherResponse) {
         GlobalScope.launch(Dispatchers.IO) {
 
-            var id: Int = if(fetchedWeather.dailyUnits.precipitationSum == "mm")
+            var id: Int = if(fetchedWeather.dailyUnits.precipitationSum == METRIC_UNIT_MM)
                 CURRENT_WEATHER_METRIC_ID else CURRENT_WEATHER_IMPERIAL_ID
 
             currentWeatherDao.updateInsert(CurrentWeather(
@@ -71,7 +80,9 @@ class ForecastRepositoryImpl(
             ))
 
             deviceLastLocationDao.updateDeviceLastLocation(DownloadedCurrentWeatherLocation(
-                locationSystem.getLocationString(fetchedWeather.latitude, fetchedWeather.longitude)!!,
+                locationSystem.getLocationString(
+                    locationSystem.getCustomLocationCoordinates()!![0],
+                    locationSystem.getCustomLocationCoordinates()!![1]) as String,
                 fetchedWeather.latitude,
                 fetchedWeather.longitude,
             ))
@@ -93,9 +104,9 @@ class ForecastRepositoryImpl(
             longitude,
             today,
             today,
-            "celsius",
-            "kmh",
-            "mm",
+            METRIC_UNIT_CELSIUS,
+            METRIC_UNIT_KMH,
+            METRIC_UNIT_MM,
         )
 
         weatherNetworkDataSource.fetchCurrentWeather(
@@ -103,20 +114,20 @@ class ForecastRepositoryImpl(
             longitude,
             today,
             today,
-            "fahrenheit",
-            "mph",
-            "inch",
+            IMPERIAL_UNIT_FAHRENHEIT,
+            IMPERIAL_UNIT_MPH,
+            IMPERIAL_UNIT__INCH,
         )
 
     }
 
     private fun isFetchCurrentNeeded(lastFetchTime: ZonedDateTime): Boolean {
-        val thirtyMinutesAgo = ZonedDateTime.now().minusMinutes(30)
+        val thirtyMinutesAgo = ZonedDateTime.now().minusMinutes(THIRTY_MINUTES)
         return lastFetchTime.isBefore(thirtyMinutesAgo)
     }
 
     private fun getCurrentDate(): String {
-        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_FORMAT))
     }
 
 }
