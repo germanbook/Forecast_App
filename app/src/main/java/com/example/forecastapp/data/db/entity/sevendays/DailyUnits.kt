@@ -9,5 +9,11 @@ data class DailyUnits(
     val temperature2mMax: String,
     @SerializedName("temperature_2m_min")
     val temperature2mMin: String,
-    val weathercode: String
+    val weathercode: String,
+    val sunrise: String,
+    val sunset: String,
+    @SerializedName("uv_index_max")
+    val uvIndexMax: String,
+    @SerializedName("precipitation_sum")
+    val precipitationSum: String
 )

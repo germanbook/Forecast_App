@@ -1,13 +1,13 @@
 package com.example.forecastapp.data.network.response
 
 
-import com.example.forecastapp.data.db.entity.sevendays.Daily
 import com.example.forecastapp.data.db.entity.sevendays.DailyUnits
+import com.example.forecastapp.data.db.entity.sevendays.SevenDaysWeatherEntry
 import com.google.gson.annotations.SerializedName
 
 data class SevenDaysWeatherResponse(
-    val latitude: Double,
-    val longitude: Double,
+    override val latitude: Double,
+    override val longitude: Double,
     @SerializedName("generationtime_ms")
     val generationtimeMs: Double,
     @SerializedName("utc_offset_seconds")
@@ -18,5 +18,6 @@ data class SevenDaysWeatherResponse(
     val elevation: Double,
     @SerializedName("daily_units")
     val dailyUnits: DailyUnits,
-    val daily: Daily
-)
+    @SerializedName("daily")
+    val sevenDaysWeatherEntry: SevenDaysWeatherEntry
+) : WeatherResponse

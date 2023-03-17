@@ -1,15 +1,11 @@
 package com.example.forecastapp.ui.weather.current
 
-import android.content.Context
 import android.content.res.Resources
 import android.location.Location
-import android.net.ConnectivityManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -21,6 +17,7 @@ import com.example.forecastapp.data.repository.IMPERIAL_UNIT_MPH
 import com.example.forecastapp.data.repository.METRIC_UNIT_KMH
 import com.example.forecastapp.databinding.FragmentCurrentWeatherBinding
 import com.example.forecastapp.ui.base.ScopedFragment
+import com.example.forecastapp.data.viewdata.currentweather.CurrentWeatherViewData
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
@@ -31,6 +28,7 @@ const val METRIC_UNIT_CELSIUS_SIGN = "°C"
 const val IMPERIAL_UNIT_FAHRENHEIT_SIGN = "°F"
 
 class   CurrentWeatherFragment : ScopedFragment(), KodeinAware {
+
 
     override val kodein by closestKodein()
     private lateinit var binding: FragmentCurrentWeatherBinding
@@ -53,12 +51,13 @@ class   CurrentWeatherFragment : ScopedFragment(), KodeinAware {
 
     private fun bindUI() = launch {
 
-        if (isOnline()) {
-            if (isUseDeviceLocation())
+        if (viewModel.isOnline()) {
+            if (isUseDeviceLocation()) {
                 updateWeatherUI(getWeatherLocation().await()!!.latitude, getWeatherLocation().await()!!.longitude)
+            }
             else {
                 if (viewModel.getCustomLocationCoordinates() == null)
-                    emptyLocationEnteredAlert()
+                // NO INTERNET CONNECTION
                 else
                     updateWeatherUI(viewModel.getCustomLocationCoordinates()!![0], viewModel.getCustomLocationCoordinates()!![1])
             }
@@ -73,7 +72,7 @@ class   CurrentWeatherFragment : ScopedFragment(), KodeinAware {
                     updateWeatherUI(it.latitude, it.longitude)
                 })
             }
-            internetConnectionAlert()
+            // NO INTERNET CONNECTION
         }
     }
 
@@ -87,56 +86,6 @@ class   CurrentWeatherFragment : ScopedFragment(), KodeinAware {
 
     private fun updateDateToToday() {
         (activity as? AppCompatActivity)?.supportActionBar?.subtitle = getText(R.string.current_fragment_actionbar_subtitle)
-    }
-
-    private fun updateTemperature(temperature: Double) {
-        val unitAbbreviation = chooseLocalizedUnitAbbreviation(METRIC_UNIT_CELSIUS_SIGN, IMPERIAL_UNIT_FAHRENHEIT_SIGN)
-        binding.textViewTemperature.text = "$temperature$unitAbbreviation"
-    }
-
-    private fun updateCondition(conditionCode: Int) {
-        var resourceStr: String = "@string/c"+conditionCode
-        var str: String? = getResourceString(resourceStr)
-        binding.textViewCondition.text = str
-    }
-
-    private fun updateWindSpeed(windSpeed: Double) {
-        val unitAbbreviation = chooseLocalizedUnitAbbreviation(METRIC_UNIT_KMH, IMPERIAL_UNIT_MPH)
-        binding.textViewWindSpeed.text = getText(R.string.current_fragment_wind_speed) as String + " $windSpeed$unitAbbreviation"
-    }
-
-    private fun updateWindDirection(windDirection: Double) {
-        binding.textViewWindDirection.text = getText(R.string.current_fragment_wind_direction) as String + " $windDirection °"
-    }
-
-    private fun updateConditionIcon(conditionCode: Int) {
-        binding.imageViewConditionIcon.setImageResource(getConditionIcon(conditionCode))
-    }
-
-    private fun updateTemperatureMax(temperatureMax: Double) {
-        val unitAbbreviation = chooseLocalizedUnitAbbreviation(METRIC_UNIT_CELSIUS_SIGN, IMPERIAL_UNIT_FAHRENHEIT_SIGN)
-        binding.textViewTemperatureMax.text = getText(R.string.current_fragment_temperature_max) as String + " $temperatureMax$unitAbbreviation"
-    }
-
-    private fun updateTemperatureMin(temperatureMin: Double) {
-        val unitAbbreviation = chooseLocalizedUnitAbbreviation(METRIC_UNIT_CELSIUS_SIGN, IMPERIAL_UNIT_FAHRENHEIT_SIGN)
-        binding.textViewTemperatureMin.text = getText(R.string.current_fragment_temperature_min) as String + " $temperatureMin$unitAbbreviation"
-    }
-
-    private fun updateSunriseTime(sunrise: String) {
-        binding.textViewSunrise.text = getText(R.string.current_fragment_sunrise) as String +
-                " ${sunrise.substring(sunrise.length - 5, sunrise.length)} " +
-                getText(R.string.current_fragment_am)
-    }
-
-    private fun updateSunsetTime(sunset: String) {
-        binding.textViewSunset.text = getText(R.string.current_fragment_sunset) as String +
-                " ${sunset.substring(sunset.length - 5, sunset.length)} " +
-                getText(R.string.current_fragment_pm)
-    }
-
-    private fun updateUVIndexMax(uvIndexMax: Double) {
-        binding.textViewUvIndexMax.text = getText(R.string.current_fragment_uv_index_max) as String + " $uvIndexMax"
     }
 
     private fun getResourceString(resName: String): String? {
@@ -186,49 +135,46 @@ class   CurrentWeatherFragment : ScopedFragment(), KodeinAware {
 
         var currentWeather: LiveData<out CurrentWeather> =
             viewModel.updateWeather(latitude, longitude)
+        if (view != null) {
 
-        downloadedCurrentWeatherLocation.observe(viewLifecycleOwner, Observer {
-            if (it == null) return@Observer
-            updateLocation(it.addressString)
-        })
+            downloadedCurrentWeatherLocation.observe(viewLifecycleOwner, Observer {
+                if (it == null) return@Observer
+                updateLocation(it.addressString)
+            })
 
-        currentWeather.observe(viewLifecycleOwner, Observer {
-            if(it == null) return@Observer
-            binding.groupLoading.visibility = View.GONE
-            updateDateToToday()
-            updateTemperature(it.temperature)
-            updateCondition(it.weathercode)
-            updateConditionIcon(it.weathercode)
-            updateTemperatureMax(it.temperature2mMax)
-            updateTemperatureMin(it.temperature2mMin)
-            updateSunriseTime(it.sunrise)
-            updateSunsetTime(it.sunset)
-            updateUVIndexMax(it.uvIndexMax)
-            updateWindSpeed(it.windspeed)
-            updateWindDirection(it.winddirection)
-        })
+            currentWeather.observe(viewLifecycleOwner, Observer {
+                if(it == null) return@Observer
+                updateDateToToday()
+
+                binding.currentWeatherViewData = CurrentWeatherViewData(
+                    it.temperature.toString() + chooseLocalizedUnitAbbreviation(METRIC_UNIT_CELSIUS_SIGN, IMPERIAL_UNIT_FAHRENHEIT_SIGN),
+                    getText(R.string.current_fragment_wind_speed) as String +
+                            " " + it.windspeed.toString() +
+                            chooseLocalizedUnitAbbreviation(METRIC_UNIT_KMH, IMPERIAL_UNIT_MPH),
+                    getText(R.string.current_fragment_wind_direction) as String +
+                            " " + it.winddirection.toString() + "°",
+                    getResourceString("@string/c"+it.weathercode)!!,
+                    getText(R.string.current_fragment_temperature_max) as String +
+                            " " + it.temperature2mMax.toString() +
+                            chooseLocalizedUnitAbbreviation(METRIC_UNIT_CELSIUS_SIGN, IMPERIAL_UNIT_FAHRENHEIT_SIGN),
+                    getText(R.string.current_fragment_temperature_min) as String +
+                            " " + it.temperature2mMin.toString() +
+                            chooseLocalizedUnitAbbreviation(METRIC_UNIT_CELSIUS_SIGN, IMPERIAL_UNIT_FAHRENHEIT_SIGN),
+                    getText(R.string.current_fragment_sunrise) as String + " " +
+                            it.sunrise?.substring(it.sunrise.length - 5, it.sunrise.length) +
+                            " " + getText(R.string.current_fragment_am),
+                    getText(R.string.current_fragment_sunset) as String + " " +
+                            it.sunset?.substring(it.sunset.length - 5, it.sunset.length) +
+                            " " + getText(R.string.current_fragment_pm),
+                    getText(R.string.current_fragment_uv_index_max) as String + " " + if (it.uvIndexMax == null) "--" else it.uvIndexMax.toString(),
+                    View.GONE,
+                    View.GONE,
+                    getConditionIcon(it.weathercode!!),
+
+                )
+
+            })
+        }
     }
 
-    private fun isOnline(): Boolean {
-        val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE)
-                as ConnectivityManager
-        val networkInfo = connectivityManager.activeNetworkInfo
-        return networkInfo != null && networkInfo.isConnected
-    }
-
-    private fun internetConnectionAlert() {
-        val builder = AlertDialog.Builder(this.requireContext())
-        builder.setTitle(R.string.no_internet_alert_title)
-        builder.setMessage(R.string.no_internet_alert_message)
-        builder.setPositiveButton(android.R.string.ok) { dialog, which -> }
-        builder.show()
-    }
-
-    private fun emptyLocationEnteredAlert() {
-        val builder = AlertDialog.Builder(this.requireContext())
-        builder.setTitle(R.string.no_location_entered_alert_title)
-        builder.setMessage(R.string.no_location_entered_alert_message)
-        builder.setPositiveButton(android.R.string.ok) { dialog, which -> }
-        builder.show()
-    }
 }

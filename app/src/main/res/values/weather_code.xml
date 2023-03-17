@@ -22,17 +22,17 @@
     <string name="c23">Rain (not freezing)</string>
     <string name="c24">Snow</string>
     <string name="c25">Freezing drizzle or freezing rain</string>
-    <string name="c26">Thunderstorm (with or without precipitation)</string>
-    <string name="c27">BLOWING OR DRIFTING SNOW OR SAND</string>
+    <string name="c26">Thunderstorm</string>
+    <string name="c27">Blowing or drifting snow or sand</string>
     <string name="c28">Blowing or drifting snow or sand</string>
     <string name="c29">Blowing or drifting snow or sand</string>
-    <string name="c30">FOG</string>
+    <string name="c30">Fog</string>
     <string name="c31">Fog or ice fog in patches</string>
     <string name="c32">Fog or ice fog, has become thinner during the past hour</string>
     <string name="c33">Fog or ice fog, no appreciable change during the past hour</string>
     <string name="c34">Fog or ice fog, has begun or become thicker during the past hour</string>
     <string name="c35">Fog, depositing rime</string>
-    <string name="c40">PRECIPITATION</string>
+    <string name="c40">Precipitation</string>
     <string name="c41">Precipitation, slight or moderate</string>
     <string name="c42">Precipitation, heavy</string>
     <string name="c43">Liquid precipitation, slight or moderate</string>
@@ -41,7 +41,7 @@
     <string name="c46">Solid precipitation, heavy</string>
     <string name="c47">Freezing precipitation, slight or moderate</string>
     <string name="c48">Freezing precipitation, heavy</string>
-    <string name="c50">DRIZZLE</string>
+    <string name="c50">Drizzle</string>
     <string name="c51">Drizzle, not freezing, slight</string>
     <string name="c52">Drizzle, not freezing, moderate</string>
     <string name="c53">Drizzle, not freezing, heavy</string>
@@ -50,7 +50,7 @@
     <string name="c56">Drizzle, freezing, heavy</string>
     <string name="c57">Drizzle and rain, slight</string>
     <string name="c58">Drizzle and rain, moderate or heavy</string>
-    <string name="c60">RAIN</string>
+    <string name="c60">Rain</string>
     <string name="c61">Rain, not freezing, slight</string>
     <string name="c62">Rain, not freezing, moderate</string>
     <string name="c63">Rain, not freezing, heavy</string>
@@ -59,7 +59,7 @@
     <string name="c66">Rain, freezing, heavy</string>
     <string name="c67">Rain (or drizzle) and snow, slight</string>
     <string name="c68">Rain (or drizzle) and snow, moderate or heavy</string>
-    <string name="c70">SNOW</string>
+    <string name="c70">Snow</string>
     <string name="c71">Snow, slight</string>
     <string name="c72">Snow, moderate</string>
     <string name="c73">Snow, heavy</string>
@@ -68,7 +68,7 @@
     <string name="c76">Ice pellets, heavy</string>
     <string name="c77">Snow grains</string>
     <string name="c78">Ice crystals</string>
-    <string name="c80">SHOWER(S) or INTERMITTENT PRECIPITATION</string>
+    <string name="c80">shower(s) or intermittent precipitation</string>
     <string name="c81">Rain shower(s) or intermittent rain, slight</string>
     <string name="c82">Rain shower(s) or intermittent rain, moderate</string>
     <string name="c83">Rain shower(s) or intermittent rain, heavy</string>
@@ -77,7 +77,7 @@
     <string name="c86">Snow shower(s) or intermittent snow, moderate</string>
     <string name="c87">Snow shower(s) or intermittent snow, heavy</string>
     <string name="c89">Hail</string>
-    <string name="c90">THUNDERSTORM</string>
+    <string name="c90">Thunderstorm</string>
     <string name="c91">Thunderstorm, slight or moderate, with no precipitation</string>
     <string name="c92">Thunderstorm, slight or moderate, with rain showers and/or snow showers</string>
     <string name="c93">Thunderstorm, slight or moderate, with hail</string>

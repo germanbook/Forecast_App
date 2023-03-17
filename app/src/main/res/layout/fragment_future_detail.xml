@@ -1,13 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.weather.future.detail.FutureDetailFragment">
 
-    <TextView
+    <data>
+        <variable
+            name="sevenDaysWeatherListItem"
+            type="com.example.forecastapp.data.viewdata.sevendaysweather.SevenDaysWeatherListItemViewData" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        android:background="@color/background_weather_color"
+        android:backgroundTint="@color/background_weather_tint">
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <ImageView
+            android:id="@+id/imageView_condition_icon"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/padding_standard_half"
+            android:layout_marginTop="@dimen/padding_standard_one_and_half"
+            android:layout_marginEnd="@dimen/padding_standard_half"
+            android:layout_marginBottom="@dimen/padding_standard_half"
+            app:layout_constraintDimensionRatio="@string/dimension_ratio_standard"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintVertical_bias="0.2"
+            app:layout_constraintWidth_percent="0.25"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_weather_sunny"
+            tools:tint="@color/orange"
+            app:imageResource="@{ sevenDaysWeatherListItem.weatherConditionIcon }"/>
+
+        <TextView
+            android:id="@+id/textView_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_standard_half"
+            android:layout_marginEnd="@dimen/padding_standard_half"
+            android:layout_marginBottom="@dimen/padding_standard_half"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView_condition_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView_condition_icon"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            tools:text="25.0°C"
+            android:text="@{ sevenDaysWeatherListItem.temperature2mMax }"/>
+
+        <TextView
+            android:id="@+id/textView_condition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_standard_half"
+            android:layout_marginTop="@dimen/padding_standard_half"
+            android:layout_marginEnd="@dimen/padding_standard_half"
+            android:layout_marginBottom="@dimen/padding_standard_half"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            app:layout_constraintHorizontal_bias="0.043"
+            app:layout_constraintVertical_bias="0.017"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Fog or ice fog, has begun or become thicker during the past hour"
+            android:text="@{ sevenDaysWeatherListItem.weatherCode }"/>
+
+        <TextView
+            android:id="@+id/textView_temperature_max"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_standard_half"
+            android:layout_marginTop="@dimen/padding_standard_half"
+            android:layout_marginEnd="@dimen/padding_standard_half"
+            android:layout_marginBottom="@dimen/padding_standard_half"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintHorizontal_bias="0.031"
+            app:layout_constraintVertical_bias="0.45"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="H: 21°C"
+            android:text="@{ sevenDaysWeatherListItem.temperature2mMax }"/>
+
+        <TextView
+            android:id="@+id/textView_temperature_min"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_standard_half"
+            android:layout_marginTop="@dimen/padding_standard_half"
+            android:layout_marginEnd="@dimen/padding_standard_half"
+            android:layout_marginBottom="@dimen/padding_standard_half"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintHorizontal_bias="0.031"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_temperature_max"
+            tools:text="L: 7°C"
+            android:text="@{ sevenDaysWeatherListItem.temperature2mMin }"/>
+
+        <TextView
+            android:id="@+id/textView_sunrise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_standard_half"
+            android:layout_marginTop="@dimen/padding_standard_half"
+            android:layout_marginEnd="@dimen/padding_standard_half"
+            android:layout_marginBottom="@dimen/padding_standard_half"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintHorizontal_bias="0.031"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_temperature_min"
+            tools:text="Sunrise: 6:50"
+            android:text="@{ sevenDaysWeatherListItem.sunRise }"/>
+
+        <TextView
+            android:id="@+id/textView_sunset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_standard_half"
+            android:layout_marginTop="@dimen/padding_standard_half"
+            android:layout_marginEnd="@dimen/padding_standard_half"
+            android:layout_marginBottom="@dimen/padding_standard_half"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintHorizontal_bias="0.031"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_sunrise"
+            tools:text="Sunset: 7:50"
+            android:text="@{ sevenDaysWeatherListItem.sunSet }"/>
+
+        <TextView
+            android:id="@+id/textView_uv_index_max"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_standard_half"
+            android:layout_marginTop="@dimen/padding_standard_half"
+            android:layout_marginEnd="@dimen/padding_standard_half"
+            android:layout_marginBottom="@dimen/padding_standard_half"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintHorizontal_bias="0.031"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_sunset"
+            tools:text="UV Index: 3"
+            android:text="@{ sevenDaysWeatherListItem.uvIndexMax }"/>
+        <TextView
+            android:id="@+id/textView_wind_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_standard_half"
+            android:layout_marginTop="@dimen/padding_standard_half"
+            android:layout_marginEnd="@dimen/padding_standard_half"
+            android:layout_marginBottom="@dimen/padding_standard_half"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintHorizontal_bias="0.031"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView_uv_index_max"
+            tools:text="Wind Speed: 32km/h"
+            android:text="@{ sevenDaysWeatherListItem.windSpeed }"/>
+
+        <TextView
+            android:id="@+id/textView_wind_direction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_standard_half"
+            android:layout_marginTop="@dimen/padding_standard_half"
+            android:layout_marginEnd="@dimen/padding_standard_half"
+            android:layout_marginBottom="@dimen/padding_standard_half"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintHorizontal_bias="0.031"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_wind_speed"
+            tools:text="Wind Direction: 190"
+            android:text="@{ sevenDaysWeatherListItem.windDirection }"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

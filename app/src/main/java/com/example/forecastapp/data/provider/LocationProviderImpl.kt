@@ -40,7 +40,8 @@ class LocationProviderImpl(
     override fun getDeviceLocation(): Deferred<Location?> {
 
         return if (hasLocationPermission()) {
-            fusedLocationProviderClient.lastLocation.asDeferred()
+            var a = fusedLocationProviderClient.lastLocation
+            a.asDeferred()
         }
         else
             throw LocationPermissionNotGrantedException()

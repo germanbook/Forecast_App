@@ -1,6 +1,7 @@
 package com.example.forecastapp.data.network.response
 
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import com.example.forecastapp.data.db.entity.current.CurrentWeather
 import com.example.forecastapp.data.db.entity.current.Daily
@@ -8,8 +9,8 @@ import com.example.forecastapp.data.db.entity.current.DailyUnits
 import com.google.gson.annotations.SerializedName
 
 data class CurrentWeatherResponse(
-    val latitude: Double,
-    val longitude: Double,
+    override val latitude: Double,
+    override val longitude: Double,
     @SerializedName("generationtime_ms")
     val generationtimeMs: Double,
     @SerializedName("utc_offset_seconds")
@@ -23,4 +24,4 @@ data class CurrentWeatherResponse(
     @SerializedName("daily_units")
     val dailyUnits: DailyUnits,
     val daily: Daily
-)
+) : WeatherResponse

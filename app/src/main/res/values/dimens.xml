@@ -22,4 +22,6 @@
     <dimen name="general_divider_height">1dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
+    <dimen name="recyclerview_item_height">100dp</dimen>
+
 </resources>

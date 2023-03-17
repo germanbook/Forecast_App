@@ -12,6 +12,8 @@ import com.example.forecastapp.data.provider.UnitProviderImpl
 import com.example.forecastapp.data.repository.ForecastRepository
 import com.example.forecastapp.data.repository.ForecastRepositoryImpl
 import com.example.forecastapp.ui.weather.current.CurrentWeatherViewModelFactory
+import com.example.forecastapp.ui.weather.future.detail.FutureDetailViewModelFactory
+import com.example.forecastapp.ui.weather.future.list.FutureListWeatherViewModelFactory
 import com.google.android.gms.location.LocationServices
 import com.jakewharton.threetenabp.AndroidThreeTen
 import org.kodein.di.Kodein
@@ -28,15 +30,18 @@ class ForecastApplication : Application(), KodeinAware {
 
         bind() from singleton { ForecastDatabase(instance()) }
         bind() from singleton { instance<ForecastDatabase>().currentWeatherDao() }
+        bind() from singleton { instance<ForecastDatabase>().sevenDaysWeatherDao() }
         bind() from singleton { instance<ForecastDatabase>().deviceLastLocationDao() }
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind() from singleton { WeatherApiService(instance()) }
         bind<WeatherNetworkDataSource>() with singleton { WeatherNetworkDataSourceImpl(instance()) }
         bind() from provider { LocationServices.getFusedLocationProviderClient(instance<Context>()) }
         bind<LocationProvider>() with singleton { LocationProviderImpl(instance(), instance()) }
-        bind<ForecastRepository>() with singleton { ForecastRepositoryImpl(instance(), instance(), instance(), instance()) }
+        bind<ForecastRepository>() with singleton { ForecastRepositoryImpl(instance(), instance(), instance(), instance(), instance()) }
         bind<UnitProvider>() with singleton { UnitProviderImpl(instance()) }
-        bind() from provider { CurrentWeatherViewModelFactory(instance(), instance(),instance()) }
+        bind() from provider { CurrentWeatherViewModelFactory(instance(), instance(), instance(), instance()) }
+        bind() from provider { FutureListWeatherViewModelFactory(instance(), instance(), instance(), instance()) }
+        bind() from provider { FutureDetailViewModelFactory(instance(), instance(), instance(), instance())}
     }
 
     override fun onCreate() {

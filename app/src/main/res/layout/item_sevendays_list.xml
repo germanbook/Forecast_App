@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="sevenDaysWeatherListItem"
+            type="com.example.forecastapp.data.viewdata.sevendaysweather.SevenDaysWeatherListItemViewData" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/recyclerview_item_height"
+        android:layout_marginTop="@dimen/padding_standard_half"
+        android:layout_marginStart="@dimen/padding_standard_half"
+        android:layout_marginEnd="@dimen/padding_standard_half"
+        android:padding="@dimen/padding_standard_half"
+        android:background="@drawable/recyclerview_selector"
+        android:onClick="@{ () -> sevenDaysWeatherListItem.onClicked.invoke(sevenDaysWeatherListItem.id) }">
+
+        <TextView
+            android:id="@+id/textView_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_standard_half"
+            android:layout_marginEnd="@dimen/padding_standard_half"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="1.1.2000"
+            android:text="@{ sevenDaysWeatherListItem.time }"/>
+
+        <TextView
+            android:id="@+id/textView_temperature_h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_standard_half"
+            android:layout_marginTop="@dimen/padding_standard_a_quarter"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="25.0°C"
+            android:text="@{ sevenDaysWeatherListItem.temperature2mMax }"/>
+
+        <TextView
+            android:id="@+id/textview_temperature_l"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_standard_half"
+            android:layout_marginTop="@dimen/padding_standard_micro"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_temperature_h"
+            tools:text="10.0°C"
+            android:text="@{ sevenDaysWeatherListItem.temperature2mMin }"/>
+
+        <TextView
+            android:id="@+id/textView_condition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Body.SingleLine"
+            android:layout_marginStart="@dimen/padding_standard_half"
+            android:layout_marginTop="@dimen/padding_standard_micro"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textview_temperature_l"
+            tools:text="Clear"
+            android:text="@{ sevenDaysWeatherListItem.weatherCode}"/>
+
+        <ImageView
+            android:id="@+id/imageView_condition_icon"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/padding_standard_half"
+            android:layout_marginEnd="@dimen/padding_standard_three_times"
+            app:layout_constraintEnd_toStartOf="@+id/textView_date"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintDimensionRatio="@string/dimension_ratio_standard"
+            app:layout_constraintWidth_percent="0.115"
+            tools:src="@drawable/ic_weather_sunny"
+            tools:tint="@color/orange"
+            app:imageResource="@{ sevenDaysWeatherListItem.weatherConditionIcon }"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

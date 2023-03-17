@@ -24,6 +24,8 @@
     <color name="brand_purple">#1a124d</color>
 
     <!-- Background color -->
-    <color name="background_weather">#597A33</color>
+    <color name="background_weather_tint">#597A33</color>
+    <color name="background_weather_color">#40212121</color>
+    <color name="recycler_view_item_background_color">#C6CC8A</color>
 
 </resources>
