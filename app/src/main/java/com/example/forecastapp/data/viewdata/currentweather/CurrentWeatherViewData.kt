@@ -1,7 +1,6 @@
 package com.example.forecastapp.data.viewdata.currentweather
 
 import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 
 data class CurrentWeatherViewData(
     var temperature: String?,

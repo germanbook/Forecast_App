@@ -5,7 +5,6 @@ import android.net.ConnectivityManager
 import com.example.forecastapp.internal.NoConnectivityException
 import okhttp3.Interceptor
 import okhttp3.Response
-import java.io.IOException
 
 class ConnectivityInterceptorImpl(
     context: Context

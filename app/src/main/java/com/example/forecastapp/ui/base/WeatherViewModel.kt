@@ -1,10 +1,8 @@
 package com.example.forecastapp.ui.base
 
-import android.app.Application
 import android.content.Context
 import android.location.Location
 import android.net.ConnectivityManager
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.forecastapp.R
@@ -47,5 +45,28 @@ abstract class WeatherViewModel(
                 as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
         return networkInfo != null && networkInfo.isConnected
+    }
+
+    fun getConditionIcon(conditionCode: Int): Int {
+        var weatherResource = 0
+        when(conditionCode) {
+            0, 1 -> weatherResource = R.drawable.weather_sun
+            2 -> weatherResource = R.drawable.weather_news
+            3 -> weatherResource = R.drawable.weather_cloud
+            4, 5, 10, 11, 20, in 30..35 ->
+                weatherResource = R.drawable.weather_fog
+            12 -> weatherResource = R.drawable.weather_storm_01
+            18, 26 -> weatherResource = R.drawable.weather_storm
+            21 -> weatherResource = R.drawable.weather_rainy_day
+            22 -> weatherResource = R.drawable.weather_raining
+            23, in 40..68 -> weatherResource = R.drawable.weather_rain
+            24, 25, in 70..79, in 80..87 ->
+                weatherResource = R.drawable.weather_snow
+            27, 28, 29 -> weatherResource = R.drawable.weather_wind_01
+            89 -> weatherResource = R.drawable.weather_hail
+            in 90..96 -> weatherResource = R.drawable.weather_storm_02
+            99 -> weatherResource = R.drawable.weather_sandstorm
+        }
+        return weatherResource
     }
 }

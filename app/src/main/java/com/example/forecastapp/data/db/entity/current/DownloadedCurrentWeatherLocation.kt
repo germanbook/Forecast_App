@@ -1,6 +1,5 @@
 package com.example.forecastapp.data.db.entity.current
 
-
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 

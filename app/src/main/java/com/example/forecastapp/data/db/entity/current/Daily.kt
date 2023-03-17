@@ -1,7 +1,5 @@
 package com.example.forecastapp.data.db.entity.current
 
-
-import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 
 data class Daily(

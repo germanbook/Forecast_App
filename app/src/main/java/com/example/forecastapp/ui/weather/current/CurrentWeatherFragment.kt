@@ -1,5 +1,6 @@
 package com.example.forecastapp.ui.weather.current
 
+import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.location.Location
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -38,7 +40,7 @@ class   CurrentWeatherFragment : ScopedFragment(), KodeinAware {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentCurrentWeatherBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -53,7 +55,8 @@ class   CurrentWeatherFragment : ScopedFragment(), KodeinAware {
 
         if (viewModel.isOnline()) {
             if (isUseDeviceLocation()) {
-                updateWeatherUI(getWeatherLocation().await()!!.latitude, getWeatherLocation().await()!!.longitude)
+                if (hasLocationPermission())
+                    updateWeatherUI(getWeatherLocation().await()!!.latitude, getWeatherLocation().await()!!.longitude)
             }
             else {
                 if (viewModel.getCustomLocationCoordinates() == null)
@@ -64,7 +67,7 @@ class   CurrentWeatherFragment : ScopedFragment(), KodeinAware {
         }
         else {
             if (viewModel.isWeatherDataDownloaded()) {
-                var location: LiveData<out DownloadedCurrentWeatherLocation> =
+                val location: LiveData<out DownloadedCurrentWeatherLocation> =
                     viewModel.getDownloadedCurrentWeatherLocation()
 
                 location.observe(viewLifecycleOwner, Observer {
@@ -96,30 +99,6 @@ class   CurrentWeatherFragment : ScopedFragment(), KodeinAware {
         }
     }
 
-    private fun getConditionIcon(conditionCode: Int): Int {
-        var weatherResource: Int = 0
-        when(conditionCode) {
-            0, 1 -> weatherResource = R.drawable.weather_sun
-            2 -> weatherResource = R.drawable.weather_news
-            3 -> weatherResource = R.drawable.weather_cloud
-            4, 5, 10, 11, 20, in 30..35 ->
-                weatherResource = R.drawable.weather_fog
-            12 -> weatherResource = R.drawable.weather_storm_01
-            18, 26 -> weatherResource = R.drawable.weather_storm
-            21 -> weatherResource = R.drawable.weather_rainy_day
-            22 -> weatherResource = R.drawable.weather_raining
-            23, in 40..68 -> weatherResource = R.drawable.weather_rain
-            24, 25, in 70..79, in 80..87 ->
-                weatherResource = R.drawable.weather_snow
-            27, 28, 29 -> weatherResource = R.drawable.weather_wind_01
-            89 -> weatherResource = R.drawable.weather_hail
-            in 90..96 -> weatherResource = R.drawable.weather_storm_02
-            99 -> weatherResource = R.drawable.weather_sandstorm
-        }
-        return weatherResource
-    }
-
-
     private fun getWeatherLocation(): Deferred<Location?> {
         return viewModel.deviceLocation
     }
@@ -130,10 +109,10 @@ class   CurrentWeatherFragment : ScopedFragment(), KodeinAware {
 
     private fun updateWeatherUI(latitude: Double, longitude: Double) = launch {
 
-        var downloadedCurrentWeatherLocation: LiveData<out DownloadedCurrentWeatherLocation> =
+        val downloadedCurrentWeatherLocation: LiveData<out DownloadedCurrentWeatherLocation> =
             viewModel.getDownloadedCurrentWeatherLocation()
 
-        var currentWeather: LiveData<out CurrentWeather> =
+        val currentWeather: LiveData<out CurrentWeather> =
             viewModel.updateWeather(latitude, longitude)
         if (view != null) {
 
@@ -169,12 +148,17 @@ class   CurrentWeatherFragment : ScopedFragment(), KodeinAware {
                     getText(R.string.current_fragment_uv_index_max) as String + " " + if (it.uvIndexMax == null) "--" else it.uvIndexMax.toString(),
                     View.GONE,
                     View.GONE,
-                    getConditionIcon(it.weathercode!!),
+                    viewModel.getConditionIcon(it.weathercode!!),
 
                 )
 
             })
         }
+    }
+
+    fun hasLocationPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(requireContext(),
+            android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
     }
 
 }

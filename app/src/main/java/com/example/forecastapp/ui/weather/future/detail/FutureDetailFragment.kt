@@ -1,28 +1,24 @@
 package com.example.forecastapp.ui.weather.future.detail
 
 import android.content.res.Resources
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.forecastapp.R
 import com.example.forecastapp.data.db.entity.sevendays.SevenDaysWeather
+import com.example.forecastapp.data.repository.IMPERIAL_UNIT_MPH
+import com.example.forecastapp.data.repository.METRIC_UNIT_KMH
 import com.example.forecastapp.data.viewdata.sevendaysweather.SevenDaysWeatherListItemViewData
 import com.example.forecastapp.databinding.FragmentFutureDetailBinding
 import com.example.forecastapp.ui.base.ScopedFragment
 import com.example.forecastapp.ui.weather.current.IMPERIAL_UNIT_FAHRENHEIT_SIGN
 import com.example.forecastapp.ui.weather.current.METRIC_UNIT_CELSIUS_SIGN
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
-import org.kodein.di.generic.factory
 import org.kodein.di.generic.instance
 
 class FutureDetailFragment : ScopedFragment(), KodeinAware {
@@ -38,18 +34,19 @@ class FutureDetailFragment : ScopedFragment(), KodeinAware {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentFutureDetailBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory).get(FutureDetailViewModel::class.java)
 
         if (!requireArguments().isEmpty) {
             arguments?.apply {
-                getInt("id")?.let { BuildUI(it) }
+                getInt("id").let { BuildUI(it) }
                 arguments?.clear()
             }
         }else findNavController().navigate(R.id.futureListWeatherFragment)
@@ -75,13 +72,13 @@ class FutureDetailFragment : ScopedFragment(), KodeinAware {
                 METRIC_UNIT_CELSIUS_SIGN, IMPERIAL_UNIT_FAHRENHEIT_SIGN
             ),
             getResourceString("@string/c"+sevenDaysWeather.weatherCode)!!,
-            getText(R.string.current_fragment_sunrise).toString() + " " +sevenDaysWeather.sunRise + " " + getText(R.string.current_fragment_am),
-            getText(R.string.current_fragment_sunset).toString() + " " +sevenDaysWeather.sunSet + " " + getText(R.string.current_fragment_pm),
+            getText(R.string.current_fragment_sunrise).toString() + " " +sevenDaysWeather.sunRise?.substring(sevenDaysWeather.sunRise.length - 5, sevenDaysWeather.sunRise.length) + " " + getText(R.string.current_fragment_am),
+            getText(R.string.current_fragment_sunset).toString() + " " +sevenDaysWeather.sunRise?.substring(sevenDaysWeather.sunRise.length - 5, sevenDaysWeather.sunRise.length) + " " + getText(R.string.current_fragment_pm),
             getText(R.string.current_fragment_uv_index_max).toString() + " " + if (sevenDaysWeather.uvIndexMax == null) "--" else sevenDaysWeather.uvIndexMax.toString(),
             sevenDaysWeather.precipitationSum.toString(),
-            sevenDaysWeather.windSpeed.toString(),
-            sevenDaysWeather.windDirection.toString(),
-            getConditionIcon(sevenDaysWeather.weatherCode!!),
+            getText(R.string.current_fragment_wind_speed).toString()+ " " +sevenDaysWeather.windSpeed.toString() + chooseLocalizedUnitAbbreviation(METRIC_UNIT_KMH, IMPERIAL_UNIT_MPH),
+            getText(R.string.current_fragment_wind_direction) as String + " " + sevenDaysWeather.windDirection.toString() + "°",
+            viewModel.getConditionIcon(sevenDaysWeather.weatherCode!!),
             sevenDaysWeather.id,
             onClicked = :: itemClicked,
         )
@@ -93,29 +90,6 @@ class FutureDetailFragment : ScopedFragment(), KodeinAware {
         } catch (e: Resources.NotFoundException) {
             null
         }
-    }
-
-    private fun getConditionIcon(conditionCode: Int): Int {
-        var weatherResource: Int = 0
-        when(conditionCode) {
-            0, 1 -> weatherResource = R.drawable.weather_sun
-            2 -> weatherResource = R.drawable.weather_news
-            3 -> weatherResource = R.drawable.weather_cloud
-            4, 5, 10, 11, 20, in 30..35 ->
-                weatherResource = R.drawable.weather_fog
-            12 -> weatherResource = R.drawable.weather_storm_01
-            18, 26 -> weatherResource = R.drawable.weather_storm
-            21 -> weatherResource = R.drawable.weather_rainy_day
-            22 -> weatherResource = R.drawable.weather_raining
-            23, in 40..68 -> weatherResource = R.drawable.weather_rain
-            24, 25, in 70..79, in 80..87 ->
-                weatherResource = R.drawable.weather_snow
-            27, 28, 29 -> weatherResource = R.drawable.weather_wind_01
-            89 -> weatherResource = R.drawable.weather_hail
-            in 90..96 -> weatherResource = R.drawable.weather_storm_02
-            99 -> weatherResource = R.drawable.weather_sandstorm
-        }
-        return weatherResource
     }
 
     private fun chooseLocalizedUnitAbbreviation(metric: String, imperial: String): String {

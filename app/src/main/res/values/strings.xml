@@ -27,4 +27,6 @@
     <string name="current_fragment_uv_index_max">UV Index</string>
     <string name="current_fragment_am">AM</string>
     <string name="current_fragment_pm">PM</string>
+
+    <string name="current_weather_progress_bar_loading">Loading</string>
 </resources>

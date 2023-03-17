@@ -1,11 +1,7 @@
 package com.example.forecastapp.data.db.entity.current
 
-
-import androidx.annotation.Nullable
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
 
 const val METRIC_ID = 0
 const val IMPERIAL_ID = 1

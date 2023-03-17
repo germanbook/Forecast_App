@@ -1,12 +1,10 @@
 package com.example.forecastapp.ui.weather.future.detail
 
 import android.content.Context
-import androidx.lifecycle.ViewModel
 import com.example.forecastapp.data.db.entity.sevendays.SevenDaysWeather
 import com.example.forecastapp.data.provider.LocationProvider
 import com.example.forecastapp.data.provider.UnitProvider
 import com.example.forecastapp.data.repository.ForecastRepository
-import com.example.forecastapp.data.viewdata.sevendaysweather.SevenDaysWeatherListItemViewData
 import com.example.forecastapp.ui.base.WeatherViewModel
 
 class FutureDetailViewModel(

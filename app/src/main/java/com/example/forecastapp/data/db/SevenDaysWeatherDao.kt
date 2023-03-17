@@ -5,11 +5,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.forecastapp.data.db.entity.sevendays.SevenDaysWeather
 import com.example.forecastapp.data.db.entity.current.*
-import com.example.forecastapp.data.repository.IMPERIAL_UNITS_IDENTIFIER
-import com.example.forecastapp.data.repository.METRIC_UNITS_IDENTIFIER
-import org.threeten.bp.LocalDate
+import com.example.forecastapp.data.db.entity.sevendays.SevenDaysWeather
 
 @Dao
 interface SevenDaysWeatherDao {

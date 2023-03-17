@@ -1,7 +1,6 @@
 package com.example.forecastapp.data.network
 
 import androidx.lifecycle.LiveData
-import com.example.forecastapp.data.db.entity.sevendays.SevenDaysWeather
 import com.example.forecastapp.data.network.response.CurrentWeatherResponse
 import com.example.forecastapp.data.network.response.SevenDaysWeatherResponse
 

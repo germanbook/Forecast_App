@@ -15,7 +15,6 @@ import com.example.forecastapp.databinding.ActivityMainBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
@@ -57,7 +56,6 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         }
         else
             requestLocationPermission()
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -79,7 +77,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         )
     }
 
-    private fun hasLocationPermission(): Boolean {
+    fun hasLocationPermission(): Boolean {
         return ContextCompat.checkSelfPermission(this,
             android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
     }
@@ -94,7 +92,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 bindLocationManager()
             else {
-                //Toast.makeText(this, "Please set location manually in settings", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please set location manually in settings", Toast.LENGTH_SHORT).show()
             }
         }
     }

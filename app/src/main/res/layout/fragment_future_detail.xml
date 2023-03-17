@@ -25,6 +25,7 @@
             app:layout_constraintGuide_percent="0.5" />
 
         <ImageView
+            android:contentDescription="@string/app_name"
             android:id="@+id/imageView_condition_icon"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -48,7 +49,7 @@
             android:id="@+id/textView_temperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/padding_standard_half"
+            android:layout_marginStart="@dimen/padding_standard"
             android:layout_marginEnd="@dimen/padding_standard_half"
             android:layout_marginBottom="@dimen/padding_standard_half"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"

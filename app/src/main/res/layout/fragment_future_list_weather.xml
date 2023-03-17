@@ -39,7 +39,7 @@
         android:layout_marginTop="@dimen/padding_standard_half"
         android:layout_marginEnd="@dimen/padding_standard_half"
         android:layout_marginBottom="@dimen/padding_standard_half"
-        android:text="Loading"
+        android:text="@string/current_weather_loading"
         android:textAppearance="@style/TextAppearance.Heading"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

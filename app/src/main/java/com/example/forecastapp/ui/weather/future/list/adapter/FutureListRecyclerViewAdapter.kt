@@ -1,13 +1,10 @@
 package com.example.forecastapp.ui.weather.future.list.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.forecastapp.data.db.entity.sevendays.SevenDaysWeather
-import com.example.forecastapp.databinding.ItemSevendaysListBinding
 import com.example.forecastapp.data.viewdata.sevendaysweather.SevenDaysWeatherListItemViewData
+import com.example.forecastapp.databinding.ItemSevendaysListBinding
 
 class FutureListRecyclerViewAdapter(
     private val sevenDaysWeatherListItem: List<SevenDaysWeatherListItemViewData>,

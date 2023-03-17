@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/futureDetailFragment"
         android:name="com.example.forecastapp.ui.weather.future.detail.FutureDetailFragment"
-        android:label="fragment_future_detail"
+        android:label="@string/current_weather_loading"
         tools:layout="@layout/fragment_future_detail" />
     <fragment
         android:id="@+id/settingsFragment"

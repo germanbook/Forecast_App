@@ -1,7 +1,5 @@
 package com.example.forecastapp.data.db.entity.sevendays
 
-
-import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 data class SevenDaysWeatherEntry(

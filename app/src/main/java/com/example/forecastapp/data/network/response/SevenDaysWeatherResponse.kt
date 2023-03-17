@@ -1,6 +1,5 @@
 package com.example.forecastapp.data.network.response
 
-
 import com.example.forecastapp.data.db.entity.sevendays.DailyUnits
 import com.example.forecastapp.data.db.entity.sevendays.SevenDaysWeatherEntry
 import com.google.gson.annotations.SerializedName

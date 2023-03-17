@@ -7,15 +7,11 @@ import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
-import android.location.LocationManager
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.example.forecastapp.internal.LocationPermissionNotGrantedException
-import com.example.forecastapp.internal.UnitSystem
 import com.example.forecastapp.internal.asDeferred
 import com.google.android.gms.location.FusedLocationProviderClient
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.coroutineScope
 import java.util.*
 
 const val USE_DEVICE_LOCATION = "USE_DEVICE_LOCATION"

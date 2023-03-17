@@ -1,6 +1,5 @@
 package com.example.forecastapp.data.db.entity.current
 
-
 import com.google.gson.annotations.SerializedName
 
 data class DailyUnits(

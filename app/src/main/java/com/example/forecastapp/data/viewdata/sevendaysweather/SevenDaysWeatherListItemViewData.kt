@@ -1,8 +1,6 @@
 package com.example.forecastapp.data.viewdata.sevendaysweather
 
 import androidx.annotation.DrawableRes
-import androidx.room.PrimaryKey
-import com.example.forecastapp.data.db.entity.sevendays.SevenDaysWeather
 
 data class SevenDaysWeatherListItemViewData (
     val time: String?,
