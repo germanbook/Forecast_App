@@ -4,9 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.weather.future.list.FutureListWeatherFragment"
-    android:background="@color/background_weather_color"
-    android:backgroundTint="@color/background_weather_tint">
+    tools:context=".ui.weather.future.list.FutureListWeatherFragment">
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group_loading"

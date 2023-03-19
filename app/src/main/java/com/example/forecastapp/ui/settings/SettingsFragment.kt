@@ -22,7 +22,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     ): View? {
         var view = super.onCreateView(inflater, container, savedInstanceState)
         view?.apply {
-            setBackgroundColor(ContextCompat.getColor( requireContext(), R.color.background_weather_color))
+            //setBackgroundColor(ContextCompat.getColor( requireContext(), R.color.background_weather_color))
             backgroundTintList = ContextCompat.getColorStateList( requireContext(), R.color.background_weather_tint);
         }
         return view

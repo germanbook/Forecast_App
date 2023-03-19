@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.MainActivity"
+    android:background="@color/background_weather_color"
+    android:backgroundTint="@color/background_weather_tint">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -33,7 +35,7 @@
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background_weather_tint"
+        android:background="@drawable/rounded_corner"
         app:itemTextColor="@color/design_default_color_background"
         app:itemIconTint="@color/design_default_color_background"
         app:menu="@menu/bottom_nav"
@@ -41,6 +43,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nav_host_fragment"/>
+        app:layout_constraintTop_toBottomOf="@id/nav_host_fragment"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

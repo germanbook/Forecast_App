@@ -13,9 +13,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/background_weather_color"
-        android:backgroundTint="@color/background_weather_tint">
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -73,15 +71,12 @@
             android:layout_marginStart="@dimen/padding_standard_half"
             android:layout_marginTop="@dimen/padding_standard_one_and_half"
             android:layout_marginEnd="@dimen/padding_standard_half"
-            android:layout_marginBottom="@dimen/padding_standard_half"
             app:layout_constraintDimensionRatio="@string/dimension_ratio_standard"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintVertical_bias="0.2"
-            app:layout_constraintWidth_percent="0.25"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintWidth_percent="0.33"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_condition"
             tools:src="@drawable/ic_weather_sunny"
             tools:tint="@color/orange"
             app:imageResource="@{ currentWeatherViewData.weatherConditionIcon }"/>
@@ -90,18 +85,15 @@
             android:id="@+id/textView_temperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/padding_standard"
+            android:layout_marginStart="@dimen/padding_standard_half"
+            android:layout_marginTop="@dimen/padding_standard"
             android:layout_marginEnd="@dimen/padding_standard_half"
-            android:layout_marginBottom="@dimen/padding_standard_half"
+            android:text="@{ currentWeatherViewData.temperature }"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView_condition_icon"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView_condition_icon"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
-            tools:text="25.0°C"
-            android:text="@{ currentWeatherViewData.temperature }"/>
+            app:layout_constraintTop_toBottomOf="@+id/imageView_condition_icon"
+            tools:text="25.0°C" />
 
         <TextView
             android:id="@+id/textView_condition"
@@ -131,7 +123,7 @@
             android:layout_marginBottom="@dimen/padding_standard_half"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             app:layout_constraintHorizontal_bias="0.031"
-            app:layout_constraintVertical_bias="0.45"
+            app:layout_constraintVertical_bias="0.52"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
